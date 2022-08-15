@@ -24,7 +24,6 @@ Important References
 //     currentBlock.innerHTML = "a";
 // }
 
-
 function Get_KeyBoardInput(event){
     // * Validate input first
     let flag1 = (event.keyCode >= 65 && event.keyCode <= 90); // * if character is uppercase
@@ -43,7 +42,6 @@ function Get_KeyBoardInput(event){
 
     else if (event.keyCode === 8)  DeleteCharacter();
     else if (event.keyCode === 13) SubmitAnswer();
-
 
 }
 
