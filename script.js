@@ -2,6 +2,13 @@ let blockOne = document.getElementsByClassName("word");
 let wordBank = ["pizza", "hello", "jazzy","spazz"];
 let currentRow = 0;
 let currentColumn = 0;
+let maximum_WordLength = 5;
+let gameEnd = false;
+
+
+let randomWord = Get_RandomWord(); // * Uncomment after finish
+console.log("Random word: "+randomWord)
+
 
 // * Actual Blocks
 let blockRows = document.getElementsByClassName("block-row");
@@ -25,17 +32,13 @@ function Get_KeyBoardInput(event){
     let flag3 = currentColumn !=5;
 
     console.log(event.keyCode)
-    if ( (flag1 || flag2) && flag3 ){ // * for some reason enter key is valid
+    if ( (flag1 || flag2) && flag3 && !gameEnd ){ // * for some reason enter key is valid
 
 
         let currentBlock = blockRows[currentRow].children[currentColumn].firstElementChild // * Gets current word based on current row and column 
         console.log(currentBlock);
         currentBlock.innerHTML = event.key.toLowerCase();
-
-        
         currentColumn++; // * Moves to the next column
-
-        console.log(currentColumn);
     }
 
     else if (event.keyCode === 8)  DeleteCharacter();
@@ -73,15 +76,26 @@ function CheckInput(){ // * Checks input if its letters are correct or not
     let columnWord = blockRows[currentRow].children;
     let wordSubmission = "";
 
+    // * backgroundColor
+    let correct_Color = "#afad55"
+    let incorrect_Color = "#8d5f48";
+
     for (let character of columnWord){
         wordSubmission += character.firstElementChild.innerHTML;
     }
 
-    console.log(wordSubmission);
 
+    // ! Checks simillarities, need to have another color if that letter exists in a different
+    for (let i = 0; i < maximum_WordLength; i++ ){
+        columnWord[i].style.backgroundColor = wordSubmission[i] === randomWord[i] ? correct_Color : incorrect_Color;
+    }
+    if (wordSubmission === randomWord ){
+        gameEnd = true;
+        console.log("You got the word; gameEnd");
+    }
 }
 
 function Get_RandomWord(){
-    let randomIndex = Math.floor(Math.random * wordBank.length);
+    let randomIndex = Math.floor(Math.random() * wordBank.length);
     return wordBank[randomIndex];
 }

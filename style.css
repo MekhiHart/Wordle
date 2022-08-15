@@ -1,6 +1,6 @@
 body{
-    background-color:  #49592a;
-    color: #cdd0c0;
+    background-color:  #eadab7;
+    color: #502c18;
 }
 
 header{
@@ -16,7 +16,7 @@ header{
 }
 
 .word-block{
-    border: 3px #cdd0c0 solid;
+    border: 3px #502c18 solid;
     margin: 5px;
     width: 75px;
     height: 75px;
