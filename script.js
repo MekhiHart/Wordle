@@ -1,5 +1,10 @@
 let blockOne = document.getElementsByClassName("word");
-let wordBank = ["pizza", "hello", "jazzy","spazz"];
+let wordBank = ["pizza", "hello", "jazzy","spazz","admit","argue","actor","below",
+"being","blame","chest","clear","cross","dated","daily","debut","group","entry","forth",
+"forty","equal","grown","found","every","guard","heart","dream","heavy","giant","given","glass",
+"fluid","lives","links","metal","minor","noted","notes","mixed","large","novel","ocean","lunch",
+"often","paint","paper","flair","float","radio","pride","price","sense","times","think",
+"union","stuck","south","yield","worth","worst","virus","would","vital",];
 let currentRow = 0;
 let currentColumn = 0;
 let maximum_WordLength = 5;
@@ -30,12 +35,8 @@ function Get_KeyBoardInput(event){
     let flag2 = (event.keyCode >= 97 && event.keyCode <= 122); // * if character is lowercase
     let flag3 = currentColumn !=5;
 
-    console.log(event.keyCode)
     if ( (flag1 || flag2) && flag3 && !gameEnd ){ // * for some reason enter key is valid
-
-
         let currentBlock = blockRows[currentRow].children[currentColumn].firstElementChild // * Gets current word based on current row and column 
-        console.log(currentBlock);
         currentBlock.innerHTML = event.key.toLowerCase();
         currentColumn++; // * Moves to the next column
     }
@@ -53,19 +54,21 @@ function DeleteCharacter(event){ // * Deletes content of currentBlock and moves 
     }
 }
 
-function SubmitAnswer(){ // * Can only submit in if currentColumn is at Column 5 and has a character inside of it
-    let flag1 = (currentColumn == 5); // * when its on the last column
-    let flag2 =  (blockRows[currentRow].children[4].firstElementChild.innerHTML.length === 1) // * Checks if last word in column is occupied
-    let flag3 = currentRow <= 4;
-    console.log(flag2)
-    if (flag1 && flag2 && flag3){ // ! Valid input
+function SubmitAnswer(){ // * Can only submit in if currentColumn is at Column 5 and has a character inside of 
+    if (!gameEnd){
+        let flag1 = (currentColumn == 5); // * when its on the last column
+        let flag2 =  (blockRows[currentRow].children[4].firstElementChild.innerHTML.length === 1) // * Checks if last word in column is occupied
+        let flag3 = currentRow <= 5;
 
-        CheckInput();
-        currentColumn = 0;
-        currentRow++;
-    }
-    else{
-        console.log("not valid")
+        if (flag1 && flag2 && flag3){ // ! Valid input
+    
+            CheckInput();
+            currentColumn = 0;
+            currentRow++;
+        }
+        else{
+            console.log("not valid")
+        }
     }
 }
 
@@ -87,9 +90,15 @@ function CheckInput(){ // * Checks input if its letters are correct or not
     for (let i = 0; i < maximum_WordLength; i++ ){
         columnWord[i].style.backgroundColor = wordSubmission[i] === randomWord[i] ? correct_Color : incorrect_Color;
     }
+
+    // * Game end checks
     if (wordSubmission === randomWord ){
         gameEnd = true;
         console.log("You got the word; gameEnd");
+    }
+    else if (currentRow === 5){ // * When the last try is not a correct
+        gameEnd = true;
+        console.log("You lost")
     }
 }
 
