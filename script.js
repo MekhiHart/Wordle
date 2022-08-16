@@ -78,27 +78,62 @@ function CheckInput(){ // * Checks input if its letters are correct or not
     let wordSubmission = "";
 
     // * backgroundColor
-    let correct_Color = "#afad55"
+    let correct_Color = "#afad55";
     let incorrect_Color = "#8d5f48";
+    let misplaced_Color = "#e4d369";
 
     for (let character of columnWord){
         wordSubmission += character.firstElementChild.innerHTML;
     }
 
+    // * Character frequency for randomWord
+    let characterFrequency = {};
+
+    // * Initalized character properties
+    for (let i = 0; i < 5; i++ ){
+        characterFrequency[randomWord[i]] = 0;
+    }
+
+
+    // * Checks for for frequency of that character based on randomWord
+    for (let i = 0; i < randomWord.length; i++){
+        characterFrequency[randomWord[i]] += 1;
+
 
     // ! Checks simillarities, need to have another color if that letter exists in a different
-    for (let i = 0; i < maximum_WordLength; i++ ){
-        columnWord[i].style.backgroundColor = wordSubmission[i] === randomWord[i] ? correct_Color : incorrect_Color;
+    for (let i = 0; i < maximum_WordLength; i++ ){ // * Checks if this words are correct or incorrect
+
+        if ( wordSubmission[i] === randomWord[i] ){ // * If character is right and in the same index
+            columnWord[i].style.backgroundColor = correct_Color
+            characterFrequency[wordSubmission[i]] -= 1; // * Decreases frequency if that character exists
+        }
+        else{
+            columnWord[i].style.backgroundColor = incorrect_Color
+        }
     }
+
+    // ! Checks for misplaced letters
+    }
+
+    for (let i = 0 ; i < wordSubmission.length; i++){ // * looks for misplaced characters and prevents coloring multiple times using an object
+        characterTarget = characterFrequency[wordSubmission[i]];
+        if (characterTarget && characterFrequency[wordSubmission[i]] > 0 ){ // * If it exists and frequency is not 0
+            console.log(wordSubmission[i] + " exists");
+            characterFrequency[wordSubmission[i]] -= 1;
+            columnWord[i].style.backgroundColor = misplaced_Color;            
+        }
+    }
+
+    console.log(characterFrequency);
 
     // * Game end checks
     if (wordSubmission === randomWord ){
         gameEnd = true;
-        console.log("You got the word; gameEnd");
+        console.log("You got the word! Game End!");
     }
     else if (currentRow === 5){ // * When the last try is not a correct
         gameEnd = true;
-        console.log("You lost")
+        console.log("You lost :( Game End")
     }
 }
 
